@@ -1,13 +1,13 @@
 @php
     $navMenus = [
         [
-            'label' => 'Dashboard',
+            'label' => __('messages.menu_dashboard'),
             'icon'  => 'fa-house',
             'route' => 'dashboard',
             'active' => request()->routeIs('dashboard')
         ],
         [
-            'label' => 'Riwayat',
+            'label' => __('messages.menu_history'),
             'icon'  => 'fa-history',
             'route' => 'riwayat.index',
             'active' => request()->routeIs('riwayat.*')
@@ -51,7 +51,7 @@
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
                 <button type="submit" class="w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all shadow-lg shadow-red-900/20">
-                    <i class="fa-solid fa-power-off mr-2"></i> Keluar
+                    <i class="fa-solid fa-power-off mr-2"></i>{{ __('messages.btn_logout') }}
                 </button>
             </form>
         </div>

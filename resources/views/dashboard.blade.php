@@ -12,8 +12,8 @@
                     </div>
                 @endif
                 <div>
-                    <h2 class="text-4xl font-black text-slate-800 tracking-tight leading-tight">Selamat Datang!</h2>
-                    <p class="text-slate-400 font-medium mt-1">Halo {{ Auth::user()->name }}, mari kelola keuanganmu hari ini.</p>
+                    <h2 class="text-4xl font-black text-slate-800 tracking-tight leading-tight">{{ __('messages.welcome') }}</h2>
+                    <p class="text-slate-400 font-medium mt-1">{{ __('messages.greeting', ['name' => Auth::user()->name]) }}</p>
                 </div>
             </div>
             
@@ -22,34 +22,34 @@
                     <i class="fa-solid fa-bell"></i>
                 </button>
                 <button onclick="openModal()" class="bg-indigo-600 text-white px-8 py-4 rounded-2xl font-black shadow-xl shadow-indigo-200 hover:bg-indigo-700 transition-all flex items-center transform active:scale-95">
-                    <i class="fa-solid fa-plus mr-3 text-lg"></i> Tambah Transaksi
+                    <i class="fa-solid fa-plus mr-3 text-lg"></i>{{ __('messages.btn_add') }}
                 </button>
             </div>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
             <div class="bg-white p-8 rounded-[40px] shadow-sm border border-slate-100 relative overflow-hidden group">
                 <div class="absolute right-[-20px] top-[-20px] w-24 h-24 bg-blue-50 rounded-full group-hover:scale-150 transition-transform duration-500"></div>
-                <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2 relative">Sisa Saldo</p>
+                <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2 relative">{{ __('messages.card_balance') }}</p>
                 <h3 class="text-3xl font-black text-slate-800 relative italic">Rp {{ number_format($balance, 0, ',', '.') }}</h3>
             </div>
 
             <div class="bg-white p-8 rounded-[40px] shadow-sm border border-slate-100 relative overflow-hidden group">
                 <div class="absolute right-[-20px] top-[-20px] w-24 h-24 bg-emerald-50 rounded-full group-hover:scale-150 transition-transform duration-500"></div>
-                <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2 relative">Pemasukan</p>
+                <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2 relative">{{ __('messages.card_income') }}</p>
                 <h3 class="text-3xl font-black text-emerald-500 relative italic">Rp {{ number_format($totalIncome, 0, ',', '.') }}</h3>
             </div>
 
             <div class="bg-white p-8 rounded-[40px] shadow-sm border border-slate-100 relative overflow-hidden group">
                 <div class="absolute right-[-20px] top-[-20px] w-24 h-24 bg-rose-50 rounded-full group-hover:scale-150 transition-transform duration-500"></div>
-                <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2 relative">Pengeluaran</p>
+                <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2 relative">{{ __('messages.card_expense') }}</p>
                 <h3 class="text-3xl font-black text-rose-500 relative italic">Rp {{ number_format($totalExpense, 0, ',', '.') }}</h3>
             </div>
         </div>
 
         <div class="bg-white rounded-[40px] shadow-sm border border-slate-100 p-8">
             <div class="flex justify-between items-center mb-8">
-                <h3 class="font-black text-slate-800 uppercase text-xs tracking-[0.3em]">Transaksi Terbaru</h3>
-                <a href="#" class="text-xs font-bold text-indigo-600 hover:underline">Lihat Semua</a>
+                <h3 class="font-black text-slate-800 uppercase text-xs tracking-[0.3em]">{{ __('messages.latest_transactions') }}</h3>
+                <a href="#" class="text-xs font-bold text-indigo-600 hover:underline">{{ __('messages.view_all') }}</a>
             </div>
             
             <div class="space-y-4">
@@ -80,7 +80,7 @@
                         </div>
                     </div>
                 @empty
-                    <p class="text-center text-slate-400 italic py-10">Belum ada aktivitas transaksi hari ini.</p>
+                    <p class="text-center text-slate-400 italic py-10">{{ __('messages.no_transactions') }}</p>
                 @endforelse
             </div>
         </div>
