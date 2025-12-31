@@ -1,0 +1,1 @@
+window.toggleSidebar=function(){const e=document.getElementById("sidebar"),l=document.querySelector("main");e&&(e.classList.contains("left-0")?(e.classList.replace("left-0","-left-72"),l&&l.classList.replace("ml-72","ml-0")):(e.classList.replace("-left-72","left-0"),l&&l.classList.replace("ml-0","ml-72")))};
