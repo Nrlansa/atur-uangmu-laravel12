@@ -9,30 +9,10 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\TransactionController;
 
-Route::get('/', function () {
-    return redirect()->route('login');
-});
+Route::permanentRedirect('/', '/login');
 Route::get('currency/{currency}', [CurrencyController::class, 'switch'])->name('currency.switch');
 Route::get('lang/{locale}', [LocaleController::class, 'switch'])->name('lang.switch');
-Route::get('/dashboard', function () {
-    $user = Auth::user();
-    $categories = Category::all();
-   
-    if (!$user) {
-        return redirect()->route('login');
-    }
-
-    $transactions = Transaction::where('user_id', $user->id)
-        ->latest() 
-        ->limit(5)
-        ->get();
-
-    $totalIncome = Transaction::where('user_id', $user->id)->where('type', 'income')->sum('amount');
-    $totalExpense = Transaction::where('user_id', $user->id)->where('type', 'expense')->sum('amount');
-    $balance = $totalIncome - $totalExpense;
-
-    return view('dashboard', compact('transactions', 'totalIncome', 'totalExpense', 'balance', 'categories'));
-})->middleware(['auth'])->name('dashboard');
+Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->middleware(['auth'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::post('/transactions/store', [TransactionController::class, 'store'])->name('transactions.store');
