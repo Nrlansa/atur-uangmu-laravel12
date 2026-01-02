@@ -7,18 +7,16 @@
                     <i class="fa-solid fa-bars-staggered text-xl"></i>
                 </button>
                 <div>
-                    <h2 class="text-4xl font-black text-slate-800 tracking-tight leading-tight">Riwayat Transaksi</h2>
-                    <p class="text-slate-400 font-medium mt-1">Pantau semua arus kas masuk dan keluar kamu.</p>
+                    <h2 class="text-4xl font-black text-slate-800 tracking-tight leading-tight">{{  __('messages.history') }}</h2>
+                    <p class="text-slate-400 font-medium mt-1">{{  __('messages.title_history') }}</p>
                 </div>
             </div>
-            
-            {{-- Tombol Tambah bisa diletakkan di sini juga jika perlu --}}
         </div>
 
-        {{-- Tabel Riwayat --}}
+        {{-- Tabel History --}}
         <div class="bg-white rounded-[40px] shadow-sm border border-slate-100 overflow-hidden">
             <div class="p-8 border-b border-slate-50 flex justify-between items-center bg-slate-50/50">
-                <h3 class="font-black text-slate-800 uppercase text-xs tracking-[0.3em]">Daftar Transaksi</h3>
+                <h3 class="font-black text-slate-800 uppercase text-xs tracking-[0.3em]">{{  __('messages.Table_history') }}</h3>
                 <span class="px-4 py-1 bg-indigo-50 text-indigo-600 rounded-full text-xs font-bold">
                     Total: {{ $transactions->count() }} Transaksi
                 </span>
@@ -28,9 +26,9 @@
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="text-slate-400 text-xs uppercase tracking-widest border-b border-slate-50">
-                            <th class="px-8 py-5 font-bold">Tanggal</th>
-                            <th class="px-8 py-5 font-bold">Keterangan</th>
-                            <th class="px-8 py-5 font-bold">Kategori</th>
+                            <th class="px-8 py-5 font-bold">{{ __('messages.date') }}</th>
+                            <th class="px-8 py-5 font-bold">{{  __('messages.description_tbl') }}</th>
+                            <th class="px-8 py-5 font-bold">{{  __('messages.tbl_category') }}</th>
                             <th class="px-8 py-5 font-bold">Nominal</th>
                             <th class="px-8 py-5 font-bold text-center">Aksi</th>
                         </tr>
@@ -48,7 +46,7 @@
                             </td>
                             <td class="px-8 py-5">
                                 <span class="px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider bg-slate-100 text-slate-500">
-                                    {{ $item->category ?? 'Umum' }}
+                                   {{ $item->category->name}}
                                 </span>
                             </td>
                             <td class="px-8 py-5">

@@ -2,14 +2,16 @@
 
 namespace App\Providers;
 
-use App\Actions\Fortify\CreateNewUser;
-use App\Actions\Fortify\ResetUserPassword;
-use Illuminate\Cache\RateLimiting\Limit;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\RateLimiter;
-use Illuminate\Support\ServiceProvider;
+use App\Models\Category;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 use Laravel\Fortify\Fortify;
+use Illuminate\Support\Facades\View;
+use App\Actions\Fortify\CreateNewUser;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Cache\RateLimiting\Limit;
+use App\Actions\Fortify\ResetUserPassword;
+use Illuminate\Support\Facades\RateLimiter;
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -29,6 +31,9 @@ class FortifyServiceProvider extends ServiceProvider
         $this->configureActions();
         $this->configureViews();
         $this->configureRateLimiting();
+        View::composer('dashboard', function ($view) {
+            $view->with('categories', Category::all());
+        });
     }
 
     /**

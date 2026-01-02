@@ -37,6 +37,42 @@
                     <span class="nav-text">{{ $menu['label'] }}</span>
                 </a>
             @endforeach
+            <div x-data="{ open: false }" class="mt-4">
+                <button @click="open = !open" 
+                        class="w-full flex items-center justify-between px-6 py-4 rounded-2xl font-bold transition-all border border-transparent text-indigo-100 hover:bg-white/5">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-gear mr-4 text-lg"></i>
+                        <span>{{ __('messages.settings') }}</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-down text-xs transition-transform" :class="open ? 'rotate-180' : ''"></i>
+                </button>
+
+                <div x-show="open" x-transition class="mt-2 ml-6 space-y-4 border-l-2 border-white/10 pl-4">
+                    <div>
+                        <p class="text-[10px] text-indigo-200 font-bold mb-2 tracking-widest uppercase"> <i class="fa-solid fa-language"></i> {{  __('messages.language') }}</p>
+                        <div class="flex gap-2">
+                            <a href="{{ route('lang.switch', 'id') }}" class="text-xs px-3 py-1.5 rounded-lg font-bold transition-all {{ app()->getLocale() == 'id' ? 'bg-white text-indigo-600' : 'text-white hover:bg-white/10' }}">ID</a>
+                            <a href="{{ route('lang.switch', 'en') }}" class="text-xs px-3 py-1.5 rounded-lg font-bold transition-all {{ app()->getLocale() == 'en' ? 'bg-white text-indigo-600' : 'text-white hover:bg-white/10' }}">EN</a>
+                        </div>
+                    </div>
+
+                    <p class="text-[10px] text-indigo-200 font-bold mb-2 tracking-widest uppercase flex items-center">
+                        <i class="fa-solid fa-coins mr-2"></i> {{ __('messages.currency') ?? 'MATA UANG' }}
+                    </p>
+                    <div class="flex gap-2">
+                        <a href="{{ route('currency.switch', 'IDR') }}" 
+                        class="flex-1 flex items-center justify-center py-2 rounded-lg text-xs font-bold transition-all
+                        {{ session('currency') == 'IDR' ? 'bg-white text-indigo-600' : 'text-white border border-white/10' }}">
+                        IDR
+                        </a>
+                        <a href="{{ route('currency.switch', 'USD') }}" 
+                        class="flex-1 flex items-center justify-center py-2 rounded-lg text-xs font-bold transition-all
+                        {{ session('currency') == 'USD' ? 'bg-white text-indigo-600' : 'text-white border border-white/10' }}">
+                        USD
+                        </a>
+                    </div>
+                </div>
+            </div>
         </nav>
         <div class="p-6 border-t border-white/10 bg-indigo-700/30">
             <div class="flex items-center mb-6">
