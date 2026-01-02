@@ -80,8 +80,6 @@
                     </tbody>
                 </table>
             </div>
-
-            {{-- Navigasi Halaman (Jika menggunakan pagination) --}}
             @if(method_exists($transactions, 'links'))
             <div class="p-8 border-t border-slate-50">
                 {{ $transactions->links() }}
