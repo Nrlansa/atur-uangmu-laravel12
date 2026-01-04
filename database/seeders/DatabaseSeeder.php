@@ -20,5 +20,6 @@ class DatabaseSeeder extends Seeder
             'email' => 'demo@aturuangmu.com',
             'password' => Hash::make('Demo2026%'),
         ]);
+        $this->call(CategorySeeder::class);
     }
 }
