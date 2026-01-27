@@ -1,27 +1,56 @@
 <?php
 
-use App\Models\Category;
-use App\Models\Transaction;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\LocaleController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\CurrencyController;
-use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\{
+    DashboardController,
+    TransactionController,
+    BudgetController,
+    ReportController,
+    WhatsappController,
+    ProfileController,
+    LocaleController,
+    CurrencyController
+};
 
+// --- Public Routes ---
 Route::permanentRedirect('/', '/login');
 Route::get('currency/{currency}', [CurrencyController::class, 'switch'])->name('currency.switch');
 Route::get('lang/{locale}', [LocaleController::class, 'switch'])->name('lang.switch');
-Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->middleware(['auth'])->name('dashboard');
 
+// --- Authenticated Routes ---
 Route::middleware('auth')->group(function () {
-    Route::post('/transactions/store', [TransactionController::class, 'store'])->name('transactions.store');
-    Route::delete('/transactions/{transaction}', [TransactionController::class, 'destroy'])->name('transactions.destroy');
-    Route::get('/riwayat', [TransactionController::class, 'index'])->name('riwayat.index');
-    //Route::get('/laporan', [laporanController::class, 'index'])->name('riwayat.index');
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // Dashboard
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    // Transactions 
+    Route::controller(TransactionController::class)->prefix('transactions')->name('transactions.')->group(function () {
+        Route::get('/', 'index')->name('index'); // Pengganti /riwayat
+        Route::post('/', 'store')->name('store');
+        Route::delete('/{transaction}', 'destroy')->name('destroy');
+    });
+
+    // Budget
+    Route::resource('budget', BudgetController::class);
+
+    // Reports
+    Route::controller(ReportController::class)->prefix('report')->name('report.')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::post('/download', 'download')->name('download');
+    });
+
+    // WhatsApp
+    Route::controller(WhatsappController::class)->prefix('whatsapp')->name('whatsapp.')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::post('/send', 'send')->name('send');
+    });
+
+    // Profile
+    Route::controller(ProfileController::class)->prefix('profile')->name('profile.')->group(function () {
+        Route::get('/', 'edit')->name('edit');
+        Route::patch('/', 'update')->name('update');
+        Route::delete('/', 'destroy')->name('destroy');
+    });
 });
 
 require __DIR__ . '/auth.php';

@@ -16,9 +16,9 @@ class DatabaseSeeder extends Seeder
     {
 
         User::create([
-            'name' => 'Demo',
-            'email' => 'demo@aturuangmu.com',
-            'password' => Hash::make('Demo2026%'),
+            'name' => 'LunaSya',
+            'email' => 'wratsay87@gmail.com',
+            'password' => Hash::make('Luna1203%'),
         ]);
         $this->call(CategorySeeder::class);
     }

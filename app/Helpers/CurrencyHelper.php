@@ -3,18 +3,11 @@
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cache;
 
-function format_uang($nominal, $currency = 'IDR')
+function format_uang(int|float $nominal, string $currency = 'IDR'): string
 {
     if ($currency === 'USD') {
-        $rate = Cache::remember('usd_rate', 3600, function () {
-            try {
-                $response = Http::get('https://open.er-api.com/v6/latest/IDR');
-                return $response->json()['rates']['USD'] ?? 0.000064;
-            } catch (\Exception $e) {
-                return 0.000064; 
-            }
-        });
-
+        // Ambil hasil cache yang sudah disiapkan oleh Service 
+        $rate = Cache::get('usd_rate', 0.000064);
         return '$ ' . number_format($nominal * $rate, 2, '.', ',');
     }
 

@@ -21,5 +21,12 @@ class StoreTransactionRequest extends FormRequest
             'date'        => 'required|date',
         ];
     }
-    
+
+    public function messages(): array
+    {
+        return [
+            'category_id.required' => __('messages.validation_category_required'),
+            'amount.min'           => __('messages.validation_amount_min'),
+        ];
+    }
 }

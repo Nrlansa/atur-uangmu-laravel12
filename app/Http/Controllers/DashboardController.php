@@ -2,25 +2,39 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Category;
+use App\Models\Transaction;
+use App\Services\FinanceService;
+use App\Services\CurrencyService;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function __construct(
+        protected CurrencyService $currency,
+        protected FinanceService $finance
+    ) {}
+
+    public function index() 
     {
         $user = Auth::user();
-        $categories = \App\Models\Category::all();
+        $currency = session('currency', 'IDR');
 
-        $transactions = \App\Models\Transaction::where('user_id', $user->id)
-            ->latest()
-            ->limit(5)
-            ->get();
+        $this->currency->updateExchangeRate();
+        $rate = ($currency === 'USD') ? Cache::get('usd_rate', 0.000064) : 1;
 
-        $totalIncome = \App\Models\Transaction::where('user_id', $user->id)->where('type', 'income')->sum('amount');
-        $totalExpense = \App\Models\Transaction::where('user_id', $user->id)->where('type', 'expense')->sum('amount');
-        $balance = $totalIncome - $totalExpense;
+        $stats = $this->finance->getMonthlyStats($user->id);
+        $chart = $this->finance->getChartData($user->id, $rate);
 
-        return view('dashboard', compact('transactions', 'totalIncome', 'totalExpense', 'balance', 'categories'));
+        return view('dashboard', array_merge([
+            'currency'     => $currency, 
+            'transactions' => Transaction::where('user_id', $user->id) 
+                ->with('category')
+                ->latest()
+                ->limit(5)
+                ->get(),
+            'categories'   => Category::all(),
+        ], $stats, $chart)); 
     }
 }

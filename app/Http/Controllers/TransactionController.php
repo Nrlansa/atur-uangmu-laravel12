@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use id;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreTransactionRequest;
 
@@ -35,17 +35,9 @@ class TransactionController extends Controller
     public function store(StoreTransactionRequest $request)
     {
         try {
-            DB::transaction(function () use ($request) {
-                Transaction::create([
-                    'user_id'     => Auth::id(),
-                    'category_id' => $request->category_id,
-                    'description' => $request->description,
-                    'amount'      => $request->amount,
-                    'type'        => $request->type,
-                    'date'        => $request->date,
-                ]);
-            });
-
+            $data = $request->validated();
+            $data['user_id']= Auth::id();
+            Transaction::create($data);
             return redirect()->back()->with('success', 'Transaction recorded successfully!');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Failed to save transaction.');
@@ -72,6 +64,10 @@ class TransactionController extends Controller
     
     public function destroy(Transaction $transaction)
     {
+        if ($transaction->user_id !== Auth::id()) {
+            return redirect()->back()->with('error', 'Unauthorized action.');
+        }
+
         $transaction->delete();
         return redirect()->back()->with('success', 'Transaksi berhasil dihapus!');
     }
