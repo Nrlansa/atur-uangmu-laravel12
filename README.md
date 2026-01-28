@@ -1,25 +1,27 @@
-# AturUangmu - Personal Finance Management
+# 💰 AturUangmu - Personal Finance Management
 
-Built with the cutting-edge **Laravel 12.44.0**, this application is designed for efficient personal financial tracking with a focus on clean architecture, real-time data integration, and professional UI/UX.
+Built with the cutting-edge **Laravel 12**, this application is designed for efficient personal financial tracking with a focus on clean architecture, real-time data integration, and professional UI/UX.
 
 ## 🚀 Key Features
 
 * **Modern Tech Stack:** Leveraging the latest features of **Laravel 12** for enhanced performance and security.
-* **Real-time Multi-currency:** Integrated with **ExchangeRate-API** to provide live currency conversion (IDR to USD).
-* **Smart Caching:** Implemented **Laravel Cache** to store exchange rates for 1 hour, optimizing performance and reducing external API dependency.
+* **Smart Budget Monitoring:** Real-time budget tracking with "Health Status" indicators (Healthy, Warning, Danger) to prevent overspending.
+* **Professional Reporting:** Generate and download comprehensive financial reports in **PDF format** with localized naming.
+* **Real-time Multi-currency:** Integrated with **ExchangeRate-API** to provide live currency conversion (IDR to USD) with **Smart Caching**.
 * **Dynamic Localization:** Full support for **English** and **Indonesian** interfaces using Laravel's localization system.
-* **Interactive UI:** Modern dashboard with floating "Toast" notifications built using **Tailwind CSS** and **Alpine.js**.
-* **Transaction Tracking:** Easily manage income and expenses with detailed descriptions and categorized records.
+* **Interactive UI:** Modern dashboard with interactive modals and floating "Toast" notifications built using **Tailwind CSS** and **Alpine.js**.
 
-## 🛠️ Technical Implementation
+## 🛠 Technical Implementation
 
-* **Helper Functions:** Custom `CurrencyHelper` registered via Composer for global access to formatting logic.
-* **API Integration:** Utilizing Laravel's `Http` client for robust external data fetching with built-in error handling.
+* **Service Layer Pattern:** Heavy logic for Exports and Finance is decoupled into dedicated Service classes to maintain a slim Controller.
 * **Component-Based Design:** Reusable Blade components for notifications and UI elements to maintain clean code.
+* **Helper Functions:** Custom `CurrencyHelper` registered via Composer for global access to formatting logic.
+* **Optimized Queries:** Implementation of Eager Loading to prevent N+1 query issues during report generation.
 
-## 🚀 Upcoming Updates (Roadmap)
-* [ ] Advanced Charts for Expense Analytics.
-* [ ] Export Reports to PDF/Excel.
+## 🗺 Upcoming Updates (Roadmap)
+
+* [ ] Advanced Charts for Expense Analytics using Chart.js.
 * [ ] User Authentication & Profile Management.
+
 ---
 *Current Status: Active Development*
