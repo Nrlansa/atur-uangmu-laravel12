@@ -92,28 +92,23 @@
                 </h3>
 
                 @forelse($budgets as $budget)
-                    @php
-                        $spent = $budget->total_spent ?? 0;
-                        $percent = $budget->amount > 0 ? ($spent / $budget->amount) * 100 : 0;
-                        $status = $budget->health_status;
-                    @endphp
-
+                    {{-- FIRM: Semua data status, percent, dan spent sekarang diambil dari objek yang sudah di-map Service --}}
                     <div class="bg-white rounded-[28px] border border-slate-100 p-6 shadow-sm mb-4">
                         <div class="flex items-center justify-between mb-4">
                             <div class="flex items-center gap-4">
+                                {{-- Warna dinamis dari Service --}}
                                 <div
-                                    class="w-12 h-12 {{ $status['light_bg'] }} rounded-2xl flex items-center justify-center {{ $status['text'] }}">
+                                    class="w-12 h-12 {{ $budget->health['light_bg'] }} rounded-2xl flex items-center justify-center {{ $budget->health['text'] }}">
                                     <i class="fa-solid fa-layer-group"></i>
                                 </div>
                                 <div>
                                     <h4 class="text-base font-black text-slate-800">{{ $budget->category->name }}</h4>
                                     <span
-                                        class="text-[10px] font-black uppercase px-2 py-0.5 rounded-md {{ $status['light_bg'] }} {{ $status['text'] }}">
-                                        {{ $status['label'] }}
+                                        class="text-[10px] font-black uppercase px-2 py-0.5 rounded-md {{ $budget->health['light_bg'] }} {{ $budget->health['text'] }}">
+                                        {{ $budget->health['label'] }}
                                     </span>
                                 </div>
                             </div>
-
                             <div class="flex items-center gap-2">
                                 <button
                                     onclick="openEditModal('{{ $budget->id }}', '{{ $budget->category_id }}', '{{ $budget->amount }}')"
@@ -131,21 +126,19 @@
                             </div>
                         </div>
 
+                        {{-- Progress Bar --}}
                         <div
                             class="relative w-full bg-slate-100 rounded-full h-4 overflow-hidden shadow-inner p-0.5 mt-2">
-                            <div class="{{ $status['bg'] }} h-full rounded-full transition-all duration-1000 shadow-[0_0_10px_rgba(0,0,0,0.1)]"
-                                style="width: {{ min($percent, 100) }}%">
-                                <div
-                                    class="w-full h-full opacity-20 bg-gradient-to-r from-transparent via-white to-transparent">
-                                </div>
+                            <div class="{{ $budget->health['bg'] }} h-full rounded-full transition-all duration-1000 shadow-[0_0_10px_rgba(0,0,0,0.1)]"
+                                style="width: {{ min($budget->percentage, 100) }}%">
                             </div>
                         </div>
 
                         <div class="flex justify-between mt-2 px-1">
                             <span class="text-[10px] font-bold text-slate-400">0%</span>
-                            <span class="text-[10px] font-black {{ $status['text'] }}">
-                                {{ number_format($percent, 1) }}%
-                                ({{ format_uang($spent, session('currency', 'IDR')) }})
+                            <span class="text-[10px] font-black {{ $budget->health['text'] }}">
+                                {{ $budget->percentage }}%
+                                ({{ format_uang($budget->total_spent, session('currency', 'IDR')) }})
                             </span>
                             <span class="text-[10px] font-bold text-slate-400">
                                 {{ __('messages.limit') }}:
@@ -161,7 +154,8 @@
             </div>
         </div>
 
-        <div id="editBudgetModal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
+        <div id="editBudgetModal"
+            class="fixed inset-0 z-[100] hidden items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
             <div class="bg-white rounded-[32px] p-8 w-full max-w-lg shadow-2xl">
                 <div class="flex justify-between items-center mb-6">
                     <h2 class="text-xl font-black text-slate-800">{{ __('messages.btn_edit_budgets') }}</h2>
@@ -173,25 +167,26 @@
                 <form id="editBudgetForm" method="POST">
                     @csrf
                     @method('PUT')
-                    
+
                     <input type="hidden" name="category_id" id="edit_category_id">
 
                     <div class="space-y-6">
                         <div>
-                            <label class="block font-bold text-[12px] text-slate-400 uppercase tracking-widest mb-3 ml-1">
+                            <label
+                                class="block font-bold text-[12px] text-slate-400 uppercase tracking-widest mb-3 ml-1">
                                 {{ __('messages.nominal_label') }}
                             </label>
                             <input type="number" name="amount" id="edit_amount" required
-                                   class="w-full bg-slate-50 border-none focus:ring-2 focus:ring-indigo-500/20 rounded-2xl py-4 px-6 font-bold text-slate-700 transition-all">
+                                class="w-full bg-slate-50 border-none focus:ring-2 focus:ring-indigo-500/20 rounded-2xl py-4 px-6 font-bold text-slate-700 transition-all">
                         </div>
 
                         <div class="grid grid-cols-2 gap-4">
                             <button type="button" onclick="closeEditModal()"
-                                    class="w-full bg-slate-100 hover:bg-slate-200 text-slate-600 font-black py-4 rounded-2xl transition-all">
+                                class="w-full bg-slate-100 hover:bg-slate-200 text-slate-600 font-black py-4 rounded-2xl transition-all">
                                 {{ __('messages.btn_cancel') }}
                             </button>
                             <button type="submit"
-                                    class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-black py-4 rounded-2xl shadow-xl shadow-indigo-100 transition-all">
+                                class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-black py-4 rounded-2xl shadow-xl shadow-indigo-100 transition-all">
                                 {{ __('messages.save_button') }}
                             </button>
                         </div>

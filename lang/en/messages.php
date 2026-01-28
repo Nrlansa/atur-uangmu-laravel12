@@ -50,7 +50,8 @@ return [
 
     //History
     'history'   =>'History Transaction',
-    'title_history'=> 'Monitor all your incoming and outgoing cash flows.',
+    'title_history'=> 'Tracking all your incoming and outgoing money.',
+    
 
     //Table History
     'Table_history'=> 'History of Transactions',
@@ -90,6 +91,7 @@ return [
     'budgets_placeholder'=>'e.g.50000',
     'empty_data' => 'No data',
     'btn_edit_budgets'=> 'Change budget',
+    'expense_by_category'=> 'Expenses by category',
 
     //report
     'menu_report'=>'Report',
@@ -116,6 +118,7 @@ return [
     'generate'      => 'Download Report Now',
     'recent_trx'    => 'Recent Transactions History',
     'no_data'       => 'No data found for this period',
+    'confirm_delete'=> 'Confirm you want to delete this data?',
 
     // Financial PDF Report
     'pdf_title'     => 'Monthly Financial Statement',

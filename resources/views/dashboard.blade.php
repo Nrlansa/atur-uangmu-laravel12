@@ -1,4 +1,4 @@
-<x-app-layout >
+<x-app-layout>
     <main class="ml-72 p-10 transition-all duration-300">
         <div class="flex items-start justify-between mb-12">
             <div class="flex items-start">
@@ -55,20 +55,64 @@
                     {{ format_uang($totalExpense, $currency) }}</h3>
             </div>
         </div>
-        <div class="bg-white p-8 rounded-[40px] shadow-sm border border-slate-100 mb-12">
-            <div class="flex justify-between items-center mb-6">
-                <div>
+        {{-- Start Grafik --}}
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+            <div class="lg:col-span-2 bg-white p-8 rounded-[40px] shadow-sm border border-slate-100">
+                <div class="flex justify-between items-center mb-6">
                     <h3 class="font-black text-slate-800 uppercase text-xs tracking-[0.3em]">
-                        {{ __('messages.cash_flow_title') ?? 'Arus Kas 7 Hari' }}</h3>
+                        {{ __('messages.cash_flow_title') ?? 'Arus Kas 7 Hari' }}
+                    </h3>
                 </div>
-            </div>
                 <div id="chart-arus-kas" class="w-full" data-income='@json($incomeData)'
                     data-expense='@json($expenseData)' data-labels='@json($labels)'
                     data-currency="{{ $currency }}" data-label-income="{{ __('messages.income') }}"
                     data-label-expense="{{ __('messages.expense') }}">
                 </div>
             </div>
+             {{-- grafik category & budget  --}}
+            <div class="bg-white p-8 rounded-[40px] shadow-sm border border-slate-100 flex flex-col justify-between">
+                <h3 class="font-black text-slate-800 uppercase text-xs tracking-[0.3em] mb-6">
+                    {{ __('messages.expense_by_category') ?? 'Kategori Pengeluaran' }}
+                </h3>
+                <div id="chart-kategori" class="w-full" data-values='@json($categoryValues)'
+                    data-labels='@json($categoryLabels)' data-total="{{ format_uang($totalAmount, $currency) }}"
+                    data-currency="{{ $currency }}">
+                </div>
+
+                <div class="mt-8 space-y-6">
+                    @foreach ($expenseDist as $item)
+                        <div class="group">
+                            <div class="flex justify-between items-end mb-2">
+                                <div>
+                                    <h4 class="text-sm font-black text-slate-700 uppercase tracking-wide">
+                                        {{ $item['category_name'] }}
+                                    </h4>
+                                    <p class="text-[10px] font-bold {{ $item['health']['text'] }} uppercase">
+                                        {{ $item['health']['label'] }}
+                                    </p>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-sm font-black text-slate-800 italic">
+                                        {{ format_uang($item['amount'], $currency) }}
+                                    </span>
+                                    <p class="text-[10px] text-slate-400 font-medium">
+                                        Sisa: {{ format_uang($item['remaining'], $currency) }}
+                                    </p>
+                                </div>
+                            </div>
+
+                            {{-- progress bar mini --}}
+                            <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+                                <div class="{{ $item['health']['bg'] }} h-full transition-all duration-500"
+                                    style="width: {{ min(($item['amount'] / max($item['limit'], 1)) * 100, 100) }}%">
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
         </div>
+        {{-- End Grafik --}}
         <div class="bg-white rounded-[40px] shadow-sm border border-slate-100 p-8">
             <div class="flex justify-between items-center mb-8">
                 <h3 class="font-black text-slate-800 uppercase text-xs tracking-[0.3em]">
@@ -91,7 +135,7 @@
                             <div>
                                 <p class="font-bold text-slate-800">{{ $trx->description }}</p>
                                 <p class="text-[10px] text-slate-400 font-bold uppercase tracking-tighter">
-                                    {{ \Carbon\Carbon::parse($trx->date)->format('d M Y') }}
+                                    {{ $trx->date->format('d M Y') }}
                                 </p>
                             </div>
                         </div>
@@ -104,7 +148,7 @@
                             </p>
 
                             <form action="{{ route('transactions.destroy', $trx->id) }}" method="POST"
-                                onsubmit="return confirm('Yakin ingin menghapus transaksi ini?')">
+                                onsubmit="return confirm('{{ __('messages.confirm_delete') }}')">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="text-slate-300 hover:text-rose-500 transition-colors">
@@ -120,6 +164,4 @@
         </div>
     </main>
     <x-transaction-modal :categories="$categories" />
-        {{-- ApexCharts Library --}}
-        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 </x-app-layout>

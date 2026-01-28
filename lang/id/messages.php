@@ -49,6 +49,10 @@ return [
     'language' => 'Bahasa',
     'currency'=>'Mata Uang',
 
+    //History
+    'history'   => 'Riwayat Transaksi',
+    'title_history' => 'Pantau semua arus masuk dan keluar uang Anda.',
+
     //WA Demo
     'wa_title' => 'WhatsApp API Simulator',
     'wa_name' => 'Nama Pelanggan',
@@ -80,6 +84,7 @@ return [
     'budgets_placeholder' => 'e.g.50000',
     'empty_data'=>'Tidak ada data',
     'btn_edit_budgets'=>'Ubah Anggaran',
+    'expense_by_category'=>'Pengeluaran Berdasarkan Kategori',
     //Report
     'menu_report'=>'Laporan',
     'title_report'=>'Buat Laporan',
@@ -104,6 +109,7 @@ return [
     'end_date'      => 'Tanggal Selesai',
     'generate'      => 'Download Laporan Sekarang',
     'recent_trx'    => 'Riwayat Transaksi Terakhir',
+    'confirm_delete'=> 'Yakin ingin menghapus data ini?',
 
     // Teks Khusus Laporan PDF
     'pdf_title'     => 'Laporan Keuangan Bulanan',

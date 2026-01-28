@@ -26,6 +26,7 @@ class DashboardController extends Controller
 
         $stats = $this->finance->getMonthlyStats($user->id);
         $chart = $this->finance->getChartData($user->id, $rate);
+        $categoryStats = $this->finance->getCategoryDistribution($user->id, $rate);
 
         return view('dashboard', array_merge([
             'currency'     => $currency, 
@@ -35,6 +36,6 @@ class DashboardController extends Controller
                 ->limit(5)
                 ->get(),
             'categories'   => Category::all(),
-        ], $stats, $chart)); 
+        ], $stats, $chart, $categoryStats)); 
     }
 }

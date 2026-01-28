@@ -39,33 +39,4 @@ class Budget extends Model
                 ->where(DB::raw("DATE_FORMAT(date, '%Y-%m')"), $month)
         ]);
     }
-
-    protected function healthStatus(): Attribute
-    {
-        return Attribute::get(function () {
-            $spent = $this->total_spent ?? 0;
-            $percent = $this->amount > 0 ? ($spent / $this->amount) * 100 : 0;
-
-            return match (true) {
-                $percent < 70  => [
-                    'bg' => 'bg-emerald-500',
-                    'light_bg' => 'bg-emerald-50',
-                    'text' => 'text-emerald-600',
-                    'label' => __('messages.safe')
-                ],
-                $percent <= 90 => [
-                    'bg' => 'bg-amber-500',
-                    'light_bg' => 'bg-amber-50',
-                    'text' => 'text-amber-600',
-                    'label' => __('messages.warning')
-                ],
-                default => [
-                    'bg' => 'bg-rose-500',
-                    'light_bg' => 'bg-rose-50',
-                    'text' => 'text-rose-600',
-                    'label' => __('messages.danger')
-                ],
-            };
-        });
-    }
 }

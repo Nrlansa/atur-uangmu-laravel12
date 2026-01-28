@@ -7,7 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Transaction extends Model
 {
-    
+    protected $casts = [
+        'date' => 'date',
+        'amount' => 'decimal:2', 
+    ];
     protected $fillable = ['user_id', 'category_id', 'description', 'amount', 'type', 'date'];
 
     public function category()
