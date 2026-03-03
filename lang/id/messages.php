@@ -49,6 +49,11 @@ return [
     'language' => 'Bahasa',
     'currency'=>'Mata Uang',
 
+    //notification
+    'delete_success' => 'Data Berhasil dihapus!',
+    'system_error' => 'Terjadi kesalahan sistem',
+    'transaction_success' => 'Transaksi berhasil disimpan',
+
     //History
     'history'   => 'Riwayat Transaksi',
     'title_history' => 'Pantau semua arus masuk dan keluar uang Anda.',
@@ -81,10 +86,11 @@ return [
     'safe'             => 'Aman',
     'warning'          => 'Peringatan',
     'danger'           => 'Bahaya',
-    'budgets_placeholder' => 'e.g.50000',
+    'budgets_placeholder' => 'Contoh.Rp.50000',
     'empty_data'=>'Tidak ada data',
     'btn_edit_budgets'=>'Ubah Anggaran',
     'expense_by_category'=>'Pengeluaran Berdasarkan Kategori',
+    'budget_monitoring'=>'Pemantauan Anggaran',
     //Report
     'menu_report'=>'Laporan',
     'title_report'=>'Buat Laporan',
@@ -123,5 +129,8 @@ return [
     'category'      => 'Kategori',
     'amount'        => 'Nominal',
     'footer_note'   => 'Laporan ini di-generate secara otomatis oleh sistem AturUangmu.',
+    'spending_budget'=>'Pemakaian Anggaran',
+    'remaining_budget'=>'Sisa Anggaran',
+    'no_budget_this_month'=>'Tidak ada Anggaran pada Bulan ini'
     
 ];

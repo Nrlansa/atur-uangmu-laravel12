@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Models\Category;
 use App\Models\Transaction;
 use App\Services\BudgetService;
 use Illuminate\Support\Facades\Auth;
@@ -10,23 +9,39 @@ use Illuminate\Support\Facades\Cache;
 
 class FinanceService{
     public function __construct(
-        protected BudgetService $budgetService 
+        protected BudgetService $budgetService,
+        protected CurrencyService $currencyService
     ) {}
 
-    public function getMonthlyStats($userId)
+    public function storeTransaction(array $data)
     {
-        $now = now();
-        $query = Transaction::where('user_id', $userId)
-            ->whereMonth('date', $now->month)
-            ->whereYear('date', $now->year);
+        // Get the rate from the service (automatically retrieved from cache/API)
+        $rate = $this->currencyService->updateExchangeRate();
 
-        $income = (clone $query)->where('type', 'income')->sum('amount');
-        $expense = (clone $query)->where('type', 'expense')->sum('amount');
+        return Transaction::create([
+            'user_id'       => Auth::id(),
+            'category_id'   => $data['category_id'],
+            'amount'        => $data['amount'],
+            'exchange_rate' => $rate,
+            'type'          => $data['type'],
+            'description'   => $data['description'],
+            'date'          => $data['date'] ?? now(),
+        ]);
+    }
+
+    public function getMonthlyStats($userId, $currency = 'IDR')
+    {
+        $transactions = Transaction::where('user_id', $userId)
+            ->whereMonth('date', now()->month)
+            ->get();
+
+        $totalIncome = $transactions->where('type', 'income')->sum('amount');
+        $totalExpense = $transactions->where('type', 'expense')->sum('amount');
 
         return [
-            'totalIncome'  => $income, 
-            'totalExpense' => $expense, 
-            'balance'      => $income - $expense,
+            'totalIncome' => (float) $totalIncome,
+            'totalExpense' => (float) $totalExpense,
+            'balance' => (float) ($totalIncome - $totalExpense)
         ];
     }
     public function getChartData($userId, $rate)
@@ -46,64 +61,87 @@ class FinanceService{
 
             $labels[] = $dateObj->format('d M');
 
-            
-            $incomeData[] = (float) $recentStats->filter(function ($trx) use ($dateString) {
-                return $trx->date->format('Y-m-d') === $dateString && $trx->type === 'income';
-            })->sum('amount') * $rate;
 
-            $expenseData[] = (float) $recentStats->filter(function ($trx) use ($dateString) {
+            $incomeData[] = $recentStats->filter(function ($trx) use ($dateString) {
+                return $trx->date->format('Y-m-d') === $dateString && $trx->type === 'income';
+            })->sum(fn($trx) => (float)$trx->amount * (float)($trx->exchange_rate ?? 1));
+
+            $expenseData[] = $recentStats->filter(function ($trx) use ($dateString) {
                 return $trx->date->format('Y-m-d') === $dateString && $trx->type === 'expense';
-            })->sum('amount') * $rate;
+            })->sum(fn($trx) => (float)$trx->amount * (float)($trx->exchange_rate ?? 1));
         }
         
 
         return compact('labels', 'incomeData', 'expenseData');
     }
 
-    public function getCategoryDistribution($userId)
+    public function getCategoryDistribution($userId, $currency = 'IDR', $startDate = null, $endDate = null)
     {
-        $transactions = Transaction::where('user_id', $userId)
+        // Take the exchange rate once at the beginning as a fallback for old data whose exchange_rate is still null
+        // If you fail to obtain the API, use 0.0000641 as the DEFAULT USD RATE API.
+        $currentRate = (float) Cache::get('usd_rate', 0.0000641);
+
+        $query = Transaction::where('user_id', $userId)
             ->where('type', 'expense')
-            ->whereMonth('date', now()->month)
-            ->with('category')
-            ->get();
+            ->with('category');
 
-        $budgets = $this->budgetService->getMonthlyMonitoring(now()->format('Y-m'))
-            ->keyBy('category_id');
+        if ($startDate && $endDate) {
+            $query->whereBetween('date', [$startDate, $endDate]);
+        } else {
+            $query->whereMonth('date', now()->month);
+        }
 
-        $data = $transactions->groupBy('category_id')
-            ->map(function ($group, $categoryId) use ($budgets) {
-                $amount = (float) $group->sum('amount');
-                $budget = $budgets->get($categoryId);
-                $limit  = $budget ? (float) $budget->amount : 0;
+        $transactions = $query->get();
 
-            // Calculate the percentage and retrieve the status from BudgetService
+        $budgetsRaw = $this->budgetService->getBudgetsByRange($startDate, $endDate);
+
+        $budgets = $budgetsRaw->groupBy('category_id')->map(function ($group) {
+            $merged = $group->first();
+            $merged->amount = $group->sum('amount');
+            return $merged;
+        });
+
+        $data = $budgets->map(function ($budget) use ($transactions, $currency, $currentRate) {
+            // Calculate Expenses by Category
+            $amount = $transactions->where('category_id', $budget->category_id)->sum(
+                fn($trx) => $currency === 'USD'
+                    ? (float)$trx->amount * (float)($trx->exchange_rate ?? $currentRate)
+                    : (float)$trx->amount
+            );
+
+            $limitRaw = (float) $budget->amount;
+
+            // Use the exchange_rate from the budget database; if null, use currentRate (fallback)
+            $budgetRate = (float) ($budget->exchange_rate ?? $currentRate);
+
+            // Convert Budget Limit to USD using the locked rate
+            $limit = $currency === 'USD' ? $limitRaw * $budgetRate : $limitRaw;
+
             $percent = $limit > 0 ? ($amount / $limit) * 100 : 0;
-                $health  = $this->budgetService->getHealthStatusByPercent($percent);
+            $health  = $this->budgetService->getHealthStatusByPercent($percent);
 
-                return [
-                    'category_name' => $group->first()->category->name ?? 'Lainnya',
-                    'amount'        => $amount,
-                    'limit'         => $limit,
-                    'remaining'     => $limit - $amount,
-                    'percentage'    => round($percent, 1),
-                    'health'        => $health,
-                     //Get the HEX color for Chart.js
-                    'color'         => $this->budgetService->getHealthColor($health['bg']),
-                ];
-            })
+            return [
+                'category_name' => $budget->category->name ?? 'Lainnya',
+                'amount'        => (float)$amount,
+                'limit'         => (float)$limit,
+                'remaining'     => (float)($limit - $amount),
+                'percentage'    => round($percent, 1),
+                'health'        => $health,
+                'color'         => $this->budgetService->getHealthColor($health['bg']),
+                'rate'          => $currency === 'USD' ? 1 : null,
+            ];
+        })
             ->sortByDesc('amount')
             ->values();
 
-        $totalRaw = (float) $transactions->sum('amount');
+        $totalRaw = $data->sum('amount');
 
         return [
             'categoryLabels' => $data->pluck('category_name')->toArray(),
-            // Enter color data into the main return
             'categoryColors' => $data->pluck('color')->toArray(),
-            'categoryValues' => $data->map(fn($item) => $item['amount'] * Cache::get('usd_rate', 0.000064))->toArray(),
+            'categoryValues' => $data->pluck('amount')->toArray(),
             'expenseDist'    => $data->toArray(),
-            'totalAmount'    => $totalRaw,
+            'totalAmount'    => (float)$totalRaw,
         ];
     }
 }

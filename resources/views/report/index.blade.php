@@ -124,7 +124,7 @@
                                     <p
                                         class="text-base font-black tracking-tighter {{ $trx->type == 'income' ? 'text-emerald-500' : 'text-rose-500' }} group-hover:scale-110 transition-transform">
                                         {{ $trx->type == 'income' ? '+' : '-' }}
-                                        {{ format_uang($trx->amount, session('currency', 'IDR')) }}
+                                        {{ format_uang($trx->amount, session('currency', 'IDR'), $trx->exchange_rate) }}
                                     </p>
                                 </div>
                             </div>

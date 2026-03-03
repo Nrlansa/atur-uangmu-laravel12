@@ -52,9 +52,15 @@ export const initDashboardChart = function(incomeData, expenseData, labels, curr
 }
 
 //Fungsi Grafik Pie (Donut) 
-export const initCategoryChart = function (values, labels, totalLabel, currency = 'IDR') {
-    
+
+export const initCategoryChart = function (values, labels, totalValue, currency = 'IDR') {
     const locale = currency === 'USD' ? 'en-US' : 'id-ID';
+    
+    const formatCurrency = (val) => new Intl.NumberFormat(locale, { 
+        style: 'currency', 
+        currency: currency,
+        maximumFractionDigits: 0 
+    }).format(val);
 
     var options = {
         series: values,
@@ -66,12 +72,20 @@ export const initCategoryChart = function (values, labels, totalLabel, currency 
                 donut: {
                     labels: {
                         show: true,
+                        name: { show: true, fontSize: '14px', color: '#64748b', offsetY: -10 },
+                        value: { 
+                            show: true, 
+                            fontSize: '20px', 
+                            fontWeight: 'bold', 
+                            offsetY: 10,
+                            formatter: (val) => formatCurrency(val) 
+                        },
                         total: {
                             show: true,
                             label: 'Total',
                             color: '#64748b',
-                            formatter: function () {
-                                return totalLabel;
+                            formatter: function (w) {
+                                return formatCurrency(totalValue);
                             }
                         }
                     }
@@ -81,7 +95,7 @@ export const initCategoryChart = function (values, labels, totalLabel, currency 
         dataLabels: { enabled: false },
         tooltip: {
             y: {
-                formatter: (val) => new Intl.NumberFormat(locale, { style: 'currency', currency: currency }).format(val)
+                formatter: (val) => formatCurrency(val)
             }
         },
         legend: { position: 'bottom', fontWeight: 600 }

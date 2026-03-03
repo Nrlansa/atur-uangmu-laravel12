@@ -86,8 +86,8 @@
                                 <td class="px-8 py-5">
                                     <span
                                         class="text-sm font-black {{ $item->type == 'income' ? 'text-emerald-500' : 'text-rose-500' }}">
-                                        {{ $item->type == 'income' ? '+' : '-' }} Rp
-                                        {{ number_format($item->amount, 0, ',', '.') }}
+                                        {{ $item->type == 'income' ? '+' : '-' }}
+                                        {{ format_uang($item->amount, $currency, $item->exchange_rate) }}
                                     </span>
                                 </td>
                                 <td class="px-8 py-5">

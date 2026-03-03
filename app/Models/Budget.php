@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 
 class Budget extends Model
 {
-    protected $fillable = ['user_id', 'category_id', 'amount', 'month'];
+    protected $fillable = ['user_id', 'category_id', 'amount', 'month', 'exchange_rate'];
 
     /**
      * Relationship ke Category

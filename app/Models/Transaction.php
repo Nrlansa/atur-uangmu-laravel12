@@ -11,7 +11,7 @@ class Transaction extends Model
         'date' => 'date',
         'amount' => 'decimal:2', 
     ];
-    protected $fillable = ['user_id', 'category_id', 'description', 'amount', 'type', 'date'];
+    protected $fillable = ['user_id', 'category_id', 'description', 'amount', 'type', 'date', 'exchange_rate'];
 
     public function category()
     {

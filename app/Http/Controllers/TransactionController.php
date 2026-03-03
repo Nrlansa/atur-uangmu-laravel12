@@ -2,80 +2,55 @@
 
 namespace App\Http\Controllers;
 
-use id;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use App\Services\FinanceService;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreTransactionRequest;
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class TransactionController extends Controller
 {
+    public function __construct(protected FinanceService $finance) {}
 
-    public function index(Request $request)
+    public function index(Request $request): View
     {
-        // take the filter input or set the default to the current month/year
         $month = $request->query('month', now()->month);
         $year = $request->query('year', now()->year);
 
-        // query builder with Eager Loading
-        $transactions = Transaction::with('category') 
+        $transactions = Transaction::with('category')
             ->where('user_id', Auth::id())
-            ->when($request->type, function ($query, $type) {
-                return $query->where('type', $type);
-            })
-            // Month & year filter 
+            ->when($request->type, fn($query, $type) => $query->where('type', $type))
             ->whereMonth('date', $month)
             ->whereYear('date', $year)
             ->orderBy('date', 'desc')
-            ->paginate(10) // 
+            ->paginate(10)
             ->withQueryString();
 
-        // Send filter data back to view 
-        return view('riwayat', compact('transactions', 'month', 'year'));
-    }
-   
-    public function create()
-    {
-        //
+        $currency = session('currency', 'IDR');
+
+        return view('riwayat', compact('transactions', 'month', 'year', 'currency'));
     }
 
-    public function store(StoreTransactionRequest $request)
+    public function store(StoreTransactionRequest $request): RedirectResponse
     {
         try {
-            $data = $request->validated();
-            $data['user_id']= Auth::id();
-            Transaction::create($data);
-            return redirect()->back()->with('success', 'Transaction recorded successfully!');
+            // The validated data has been entered into the service.
+            $this->finance->storeTransaction($request->validated());
+
+            return redirect()->back()->with('success', __('messages.transaction_success'));
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Failed to save transaction.');
+            return redirect()->back()->with('error', __('messages.system_error'));
         }
     }
-    
-    public function show(string $id)
-    {
-        //
-    }
 
-    
-    public function edit(string $id)
+    public function destroy(Transaction $transaction): RedirectResponse
     {
-        //
-    }
-
-    
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    
-    public function destroy(Transaction $transaction)
-    {
-        if ($transaction->user_id !== Auth::id()) {
-            return redirect()->back()->with('error', 'Unauthorized action.');
-        }
+        abort_if($transaction->user_id !== Auth::id(), 403);
 
         $transaction->delete();
-        return redirect()->back()->with('success', 'Transaksi berhasil dihapus!');
+
+        return redirect()->back()->with('success', __('messages.delete_success'));
     }
 }

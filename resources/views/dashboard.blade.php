@@ -74,9 +74,11 @@
                 <h3 class="font-black text-slate-800 uppercase text-xs tracking-[0.3em] mb-6">
                     {{ __('messages.expense_by_category') ?? 'Kategori Pengeluaran' }}
                 </h3>
-                <div id="chart-kategori" class="w-full" data-values='@json($categoryValues)'
-                    data-labels='@json($categoryLabels)' data-total="{{ format_uang($totalAmount, $currency) }}"
-                    data-currency="{{ $currency }}">
+               <div id="chart-kategori" 
+                data-total="{{ $totalAmount }}" 
+                data-values="{{ json_encode($categoryValues) }}"
+                data-labels="{{ json_encode($categoryLabels) }}"
+                data-currency="{{ $currency }}">
                 </div>
 
                 <div class="mt-8 space-y-6">
@@ -93,10 +95,10 @@
                                 </div>
                                 <div class="text-right">
                                     <span class="text-sm font-black text-slate-800 italic">
-                                        {{ format_uang($item['amount'], $currency) }}
+                                        {{ format_uang($item['amount'], $currency,1) }}
                                     </span>
                                     <p class="text-[10px] text-slate-400 font-medium">
-                                        Sisa: {{ format_uang($item['remaining'], $currency) }}
+                                        Sisa: {{ format_uang($item['remaining'], $currency,1 ) }}
                                     </p>
                                 </div>
                             </div>
@@ -144,7 +146,7 @@
                             <p
                                 class="font-black italic {{ $trx->type == 'income' ? 'text-emerald-500' : 'text-rose-500' }}">
                                 {{ $trx->type == 'income' ? '+' : '-' }}
-                                {{ format_uang($trx->amount, session('currency', 'IDR')) }}
+                                {{ format_uang($trx->amount, session('currency', 'IDR'), $trx->exchange_rate) }}
                             </p>
 
                             <form action="{{ route('transactions.destroy', $trx->id) }}" method="POST"

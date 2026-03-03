@@ -6,21 +6,25 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (cashFlowEl) {
         initDashboardChart(
-            JSON.parse(cashFlowEl.dataset.income || '[]'),
-            JSON.parse(cashFlowEl.dataset.expense || '[]'),
+            JSON.parse(cashFlowEl.dataset.income || '[]').map(Number),
+            JSON.parse(cashFlowEl.dataset.expense || '[]').map(Number),
             JSON.parse(cashFlowEl.dataset.labels || '[]'),
-            cashFlowEl.dataset.currency,
+            cashFlowEl.dataset.currency || 'IDR',
             cashFlowEl.dataset.labelIncome,
             cashFlowEl.dataset.labelExpense
         );
     }
 
     if (categoryEl) {
+        const totalValue = parseFloat(categoryEl.dataset.total || 0);
+        const values = JSON.parse(categoryEl.dataset.values || '[]').map(Number);
+        const labels = JSON.parse(categoryEl.dataset.labels || '[]');
+
         initCategoryChart(
-            JSON.parse(categoryEl.dataset.values || '[]'),
-            JSON.parse(categoryEl.dataset.labels || '[]'),
-            categoryEl.dataset.total,
-            categoryEl.dataset.currency
+            values,
+            labels,
+            totalValue,
+            categoryEl.dataset.currency || 'IDR'
         );
     }
 });

@@ -16,26 +16,25 @@ class DashboardController extends Controller
         protected FinanceService $finance
     ) {}
 
-    public function index() 
+    public function index()
     {
         $user = Auth::user();
         $currency = session('currency', 'IDR');
 
         $this->currency->updateExchangeRate();
-        $rate = ($currency === 'USD') ? Cache::get('usd_rate', 0.000064) : 1;
 
-        $stats = $this->finance->getMonthlyStats($user->id);
-        $chart = $this->finance->getChartData($user->id, $rate);
-        $categoryStats = $this->finance->getCategoryDistribution($user->id, $rate);
+        $stats = $this->finance->getMonthlyStats($user->id, $currency);
+        $chart = $this->finance->getChartData($user->id, $currency);
+        $categoryStats = $this->finance->getCategoryDistribution($user->id, $currency);
 
         return view('dashboard', array_merge([
-            'currency'     => $currency, 
-            'transactions' => Transaction::where('user_id', $user->id) 
+            'currency'     => $currency,
+            'transactions' => Transaction::where('user_id', $user->id)
                 ->with('category')
                 ->latest()
                 ->limit(5)
                 ->get(),
             'categories'   => Category::all(),
-        ], $stats, $chart, $categoryStats)); 
+        ], $stats, $chart, $categoryStats));
     }
 }
