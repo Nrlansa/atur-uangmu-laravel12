@@ -1,5 +1,8 @@
 # 💰 AturUangmu - Personal Finance Management
 
+### 📸 Preview
+![Dashboard AturUangmu](public/assets/images/Dashboard%20Atur%20Uang%20mu.png)
+
 Built with the cutting-edge **Laravel 12**, this application is designed for efficient personal financial tracking with a focus on clean architecture, real-time data integration, and professional UI/UX.
 
 ## 🚀 Key Features
