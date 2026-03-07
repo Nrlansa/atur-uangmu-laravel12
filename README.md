@@ -25,9 +25,10 @@ Built with the cutting-edge **Laravel 12**, this application is designed for eff
 * **Modular Asset Management:** Organized frontend logic using dedicated JS modules (`charts.js`, `dashboard.js`) to ensure the dashboard remains performant and easy to maintain.
 
 ## 🗺 Upcoming Updates (Roadmap)
+* [x] Quick Messenger (WhatsApp Report)
 * [ ] **Intelligent Category Alerts:** Automated notifications triggered when a specific category reaches a "Warning" or "Danger" health status based on its budget limit.
 * [ ] **Dynamic Theme Engine:** Support for **Dark Mode** and customizable color presets using Tailwind CSS
-* [ ] User Authentication & Profile Management.
+* [ ] **Profile Management**
 
 
 ---
