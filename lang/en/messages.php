@@ -65,16 +65,16 @@ return [
     'description_tbl'=>'Description',
     'tbl_category'=>'Categories',
 
-    //WA Demo
-    'menu_WA'=> 'WhatsApp API',
-    'wa_title' => 'WhatsApp API Simulator',
-    'wa_name'=> 'Customer Name',
-    'wa_message'=> 'Auto Message',
-    'wa_btn'=> 'TEST SEND NOW',
-    'WA_desc'=> 'Enter your order',
-    'Wa_name_cust'=> 'e.g. Alex',
-    'wa_wa_hello'         => 'Hello, I am',
-    'wa_wa_message_label' => 'Message',
+    //Quick Messenger
+    'menu_WA'=> 'Quick Messenger',
+    'title_QM'=> 'Financial summary',
+    'period'=> 'Period',
+    'income_QM'=>'Income',
+    'expense_QM'=>'Expense',
+    'balance_QM'=> 'Current Balance',
+    'spending_QM'=> 'Top Spending',
+    'title_bottomQM'=> 'Sent from Web Atur Uangmu',
+
 
     //grafik
     'cash_flow_title' => 'Cash Flow Last 7 Days',

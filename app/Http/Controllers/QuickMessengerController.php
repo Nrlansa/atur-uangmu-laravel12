@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class WhatsappController extends Controller
+class QuickMessengerController extends Controller
 {
     public function index(Request $request){
         

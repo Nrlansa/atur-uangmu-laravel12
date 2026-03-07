@@ -6,7 +6,7 @@
                 <div class="max-w-2xl bg-indigo-900 border border-indigo-700 rounded-3xl p-8 shadow-2xl">
                     <h2 class="text-2xl font-black text-white mb-6 italic">{{ __('messages.wa_title') }}</h2>
 
-                    <form action="{{ route('demoWA-send') }}" method="POST" class="space-y-6">
+                    <form action="{{ route('whatsapp.send') }}" method="POST" class="space-y-6">
                         @csrf
                         <div>
                             <label class="block text-white font-bold mb-2">{{ __('messages.wa_name') }}</label>

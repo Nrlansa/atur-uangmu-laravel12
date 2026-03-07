@@ -6,7 +6,7 @@ use App\Http\Controllers\{
     TransactionController,
     BudgetController,
     ReportController,
-    WhatsappController,
+    QuickMessengerController,
     ProfileController,
     LocaleController,
     CurrencyController
@@ -40,7 +40,7 @@ Route::middleware('auth')->group(function () {
     });
 
     // WhatsApp
-    Route::controller(WhatsappController::class)->prefix('whatsapp')->name('whatsapp.')->group(function () {
+    Route::controller(QuickMessengerController::class)->prefix('whatsapp')->name('whatsapp.')->group(function () {
         Route::get('/', 'index')->name('index');
         Route::post('/send', 'send')->name('send');
     });

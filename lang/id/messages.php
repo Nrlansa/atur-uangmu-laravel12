@@ -58,15 +58,15 @@ return [
     'history'   => 'Riwayat Transaksi',
     'title_history' => 'Pantau semua arus masuk dan keluar uang Anda.',
 
-    //WA Demo
-    'wa_title' => 'WhatsApp API Simulator',
-    'wa_name' => 'Nama Pelanggan',
-    'wa_message' => 'Pesan Otomatis',
-    'wa_btn' => 'UJI COBA KIRIM SEKARANG',
-    'WA_desc' => 'Masukkan pesanan Anda..',
-    'Wa_name_cust' => 'Misalnya, Alex..',
-    'wa_wa_hello'         => 'Halo, saya',
-    'wa_wa_message_label' => 'Pesan',
+    //Quick Messenger
+    'menu_WA' => 'Pesan cepat',
+    'title_QM' => 'Ringkasan Keuangan',
+    'period' => 'Periode',
+    'income_QM' => 'Pemasukkan',
+    'expense_QM' => 'Pengeluaran',
+    'balance_QM' => 'Saldo Saat ini',
+    'spending_QM' => 'Pengeluaran Tertinggi',
+    'title_bottomQM' => 'Dikirim dari Web Atur uangmu',
 
     //grafik
     'cash_flow_title'=>'Arus Kas 7 Hari terakhir',
