@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
-use Illuminate\View\View;
+use App\Http\Requests\ExportReportRequest;
 use App\Models\Transaction;
-use Illuminate\Http\Request;
 use App\Services\ExportService;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 use Symfony\Component\HttpFoundation\Response;
 
 class ReportController extends Controller
@@ -38,7 +37,7 @@ class ReportController extends Controller
     /**
      * Handling the PDF download process.
      */
-    public function download(Request $request): Response
+    public function download(ExportReportRequest $request): Response
     {
         // Validation to prevent crashes
         $validated = $request->validate([
@@ -52,9 +51,9 @@ class ReportController extends Controller
         //Delegate to Service with Carbon Object
         $pdf = $this->exportService->generateFinancePDF(
             userId: Auth::id(),
-            startDate: \Carbon\Carbon::parse($request->start_date),
-            endDate: \Carbon\Carbon::parse($request->end_date),
-            currency: $currency
+            startDate: $request->start_date, 
+            endDate: $request->end_date,    
+            currency: session('currency', 'IDR')
         );
 
         // File Name Dynamization Based on Language
