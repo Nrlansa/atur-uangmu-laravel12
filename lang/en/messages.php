@@ -74,6 +74,11 @@ return [
     'balance_QM'=> 'Current Balance',
     'spending_QM'=> 'Top Spending',
     'title_bottomQM'=> 'Sent from Web Atur Uangmu',
+    'lable_QM'=>'Quick Messenger',
+    'reportQM'=> 'Create a WhatsApp report',
+    'sendQM' => 'Send to WhatsApp',
+    'preview'=> 'Quick Messenger Preview',
+    'PreviewQM'=> 'Select a period to preview...',
 
 
     //grafik
@@ -118,6 +123,7 @@ return [
     'title_guide' => 'Maximize your financial insight.',
     'title01_guide' => 'Use monthly filters for more accurate reports',
     'title02_guide' => 'Report data is local and encrypted to protect your financial privacy.',
+    'title03_guide' => 'Make sure the WhatsApp application is connected to your device.',
 
     // Web UI / Sidebar
     'start_date'    => 'Start Date',

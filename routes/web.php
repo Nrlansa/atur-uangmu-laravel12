@@ -42,7 +42,7 @@ Route::middleware('auth')->group(function () {
     // WhatsApp
     Route::controller(QuickMessengerController::class)->prefix('whatsapp')->name('whatsapp.')->group(function () {
         Route::get('/', 'index')->name('index');
-        Route::post('/send', 'send')->name('send');
+        Route::get('/send', 'send')->name('send');
     });
 
     // Profile

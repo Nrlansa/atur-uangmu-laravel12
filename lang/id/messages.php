@@ -67,6 +67,12 @@ return [
     'balance_QM' => 'Saldo Saat ini',
     'spending_QM' => 'Pengeluaran Tertinggi',
     'title_bottomQM' => 'Dikirim dari Web Atur uangmu',
+    'lable_QM' => 'Pesan Cepat',
+    'otomatedQM'=> 'Pembuat Laporan otomatis ke WhatsApp',
+    'reportQM' => 'Buat Laporan WhatsApp',
+    'sendQM'=>'Kirim ke WhatsApp',
+    'preview' => 'Pratinjau Pesan cepat',
+    'PreviewQM' => 'Pilih periode untuk melihat pratinjau...',
 
     //grafik
     'cash_flow_title'=>'Arus Kas 7 Hari terakhir',
@@ -91,6 +97,7 @@ return [
     'btn_edit_budgets'=>'Ubah Anggaran',
     'expense_by_category'=>'Pengeluaran Berdasarkan Kategori',
     'budget_monitoring'=>'Pemantauan Anggaran',
+
     //Report
     'menu_report'=>'Laporan',
     'title_report'=>'Buat Laporan',
@@ -107,8 +114,9 @@ return [
     //System Guide
     'Lable_guide'=>'Panduan Sistem',
     'title_guide'=> 'Maksimalkan pemahaman keuangan Anda.',
-    'title01_guide'=> 'Gunakan filter bulanan untuk laporan yang lebih akurat',
-    'title02_guide' => 'Data laporan bersifat lokal dan terenkripsi untuk menjaga privasi keuanganmu',
+    'title01_guide'=> 'Gunakan filter bulanan untuk laporan yang lebih akurat.',
+    'title02_guide' => 'Data laporan bersifat lokal dan terenkripsi untuk menjaga privasi keuanganmu.',
+    'title03_guide'=> 'Pastikan aplikasi WhatsApp sudah terhubung di perangkat kamu.',
 
     // Teks untuk Web/UI
     'start_date'    => 'Tanggal Mulai',
