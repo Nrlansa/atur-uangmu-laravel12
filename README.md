@@ -1,11 +1,11 @@
-# 💰 AturUangmu - Personal Finance Management
+#  AturUangmu - Personal Finance Management
 
-### 📸 Preview
+###  Preview
 ![Dashboard AturUangmu](public/assets/images/Dashboard%20Atur%20Uang%20mu.png)
 
 Built with the cutting-edge **Laravel 12**, this application is designed for efficient personal financial tracking with a focus on clean architecture, real-time data integration, and professional UI/UX.
 
-## 🚀 Key Features
+##  Key Features
 
 * **Modern Tech Stack:** Leveraging the latest features of **Laravel 12** for enhanced performance and security.
 * **Smart Budget Monitoring:** Real-time budget tracking with "Health Status" indicators (Healthy, Warning, Danger) to prevent overspending.
@@ -15,7 +15,7 @@ Built with the cutting-edge **Laravel 12**, this application is designed for eff
 * **Interactive UI:** Modern dashboard with interactive modals and floating "Toast" notifications built using **Tailwind CSS** and **Alpine.js**.
 * **Interactive Data Visualization:** Dynamic line charts for cash flow trends and doughnut charts for category-based expense distribution, powered by **Chart.js**.
 
-## 🛠 Technical Implementation
+##  Technical Implementation
 
 * **Service Layer Pattern:** Heavy logic for Exports and Finance is decoupled into dedicated Service classes to maintain a slim Controller.
 * **Component-Based Design:** Reusable Blade components for notifications and UI elements to maintain clean code.
@@ -24,12 +24,12 @@ Built with the cutting-edge **Laravel 12**, this application is designed for eff
 * **Asynchronous Data Visualization:** Integrated **Chart.js** with backend datasets to provide real-time cash flow trends and category distribution, managed through a clean separation of concerns in JavaScript assets.
 * **Modular Asset Management:** Organized frontend logic using dedicated JS modules (`charts.js`, `dashboard.js`) to ensure the dashboard remains performant and easy to maintain.
 
-## 🗺 Upcoming Updates (Roadmap)
-* [x] Quick Messenger (WhatsApp Report)
-* [ ] **Intelligent Category Alerts:** Automated notifications triggered when a specific category reaches a "Warning" or "Danger" health status based on its budget limit.
-* [ ] **Dynamic Theme Engine:** Support for **Dark Mode** and customizable color presets using Tailwind CSS
-* [ ] **Profile Management**
+## Future Roadmap
+
+We have a long-term vision to evolve *AturUangmu* into a smarter, more personalized financial management solution:
+
+* **Intelligent Category Alerts:** Developing an automated notification system based on budget thresholds (Warning/Danger status) for proactive financial control.
+* **Dynamic Theme Engine:** Implementing Dark Mode and customizable color presets to enhance the user's visual experience.
+* **Data Export API:** Integrating with third-party services for broader financial data synchronization.
 
 
----
-*Current Status: Active Development*
